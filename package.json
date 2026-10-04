@@ -1,0 +1,13 @@
+{
+  "name": "tribuna",
+  "version": "1.0.0",
+  "description": "Тренер по постановке речи на Gemini: разбор текста или записи выступления",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js",
+    "test": "node --test"
+  },
+  "engines": { "node": ">=18" }
+}
