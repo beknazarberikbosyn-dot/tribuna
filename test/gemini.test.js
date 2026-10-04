@@ -58,3 +58,13 @@ test('сообщает о лимите и о неподходящем форма
     fakeFetch({ error: { message: 'Unsupported MIME type: audio/webm' } }, 400));
   assert.equal(format.body.code, 'AUDIO_FORMAT');
 });
+
+test('объясняет, почему Gemini отклонил ключ, и чистит ключ от кавычек и пробелов', async () => {
+  const invalid = await analyze({ mode: 'text', text: longText }, { GEMINI_API_KEY: ' "k"\n' },
+    fakeFetch({ error: { message: 'API key not valid. Please pass a valid API key.', details: [{ reason: 'API_KEY_INVALID' }] } }, 400));
+  assert.equal(fakeFetch.last.init.headers['x-goog-api-key'], 'k');
+  assert.match(invalid.body.error, /неверное/);
+  const denied = await analyze({ mode: 'text', text: longText }, { GEMINI_API_KEY: 'k' },
+    fakeFetch({ error: { message: 'Requests from referer <empty> are blocked.' } }, 403));
+  assert.match(denied.body.error, /referer <empty> are blocked/);
+});
