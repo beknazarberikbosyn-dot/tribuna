@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Трибуна: тренер по постановке речи</title>
+  <meta name="description" content="Вставьте текст выступления или запишите его голосом. Трибуна покажет слабые места и подскажет, как их исправить.">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600&family=Unbounded:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="top">
+    <a class="wordmark" href="/">Трибуна</a>
+    <p class="top-note">Разбор делает Gemini</p>
+  </header>
+
+  <main>
+    <section class="intro">
+      <h1>Отрепетируйте речь до выхода к людям</h1>
+      <p class="lead">Вставьте текст выступления или произнесите его в микрофон. Трибуна отметит слабые места прямо в вашей речи и покажет, как сказать лучше.</p>
+    </section>
+
+    <section class="desk" aria-label="Ваша речь">
+      <div class="modes" role="tablist" aria-label="Способ ввода">
+        <button class="mode" role="tab" id="tab-text" aria-controls="panel-text" aria-selected="true">Вставить текст</button>
+        <button class="mode" role="tab" id="tab-audio" aria-controls="panel-audio" aria-selected="false" tabindex="-1">Записать голос</button>
+      </div>
+
+      <div class="panel" id="panel-text" role="tabpanel" aria-labelledby="tab-text">
+        <label class="visually-hidden" for="speech-text">Текст выступления</label>
+        <textarea id="speech-text" rows="11" placeholder="Вставьте сюда текст выступления: защиту проекта, тост, ответ на собеседовании, доклад."></textarea>
+        <div class="panel-foot">
+          <p class="count" id="text-count">0 слов</p>
+          <label class="file-button">
+            <input type="file" id="text-file" accept=".txt,.md,text/plain">
+            Загрузить файл .txt
+          </label>
+        </div>
+      </div>
+
+      <div class="panel" id="panel-audio" role="tabpanel" aria-labelledby="tab-audio" hidden>
+        <div class="recorder" id="recorder" data-state="idle">
+          <button class="record-button" id="record-button" type="button" aria-label="Начать запись">
+            <span class="record-dot" aria-hidden="true"></span>
+          </button>
+          <div class="recorder-body">
+            <p class="recorder-status" id="recorder-status">Нажмите на кнопку и говорите. Запись до 10 минут.</p>
+            <canvas class="meter" id="meter" width="600" height="56" aria-hidden="true"></canvas>
+            <p class="timer" id="timer" aria-live="off">0:00</p>
+          </div>
+        </div>
+        <div class="playback" id="playback" hidden>
+          <audio id="player" controls></audio>
+          <button class="link-button" id="record-again" type="button">Записать заново</button>
+        </div>
+      </div>
+
+      <div class="options">
+        <div class="field">
+          <label for="context">Где и перед кем выступаете</label>
+          <input id="context" type="text" maxlength="300" placeholder="Например: защита проекта перед жюри, 3 минуты">
+        </div>
+        <div class="field field-narrow">
+          <label for="language">Язык разбора</label>
+          <select id="language">
+            <option value="ru">Русский</option>
+            <option value="kk">Қазақша</option>
+            <option value="en">English</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="primary" id="analyze-button" type="button">Разобрать речь</button>
+        <p class="notice" id="notice" role="status" aria-live="polite"></p>
+      </div>
+    </section>
+
+    <section class="result" id="result" hidden aria-label="Разбор речи" tabindex="-1">
+      <div class="verdict">
+        <p class="overall"><span class="overall-number" id="overall">0</span><span class="overall-of">из 100</span></p>
+        <p class="summary" id="summary"></p>
+      </div>
+
+      <dl class="facts" id="facts"></dl>
+
+      <div class="scores" id="scores"></div>
+
+      <div class="columns">
+        <article class="manuscript">
+          <h2 id="manuscript-title">Ваша речь с пометками</h2>
+          <p class="hint">Жёлтым отмечены места, к которым есть замечания. Нажмите на отметку, чтобы перейти к разбору.</p>
+          <div class="manuscript-text" id="manuscript"></div>
+        </article>
+
+        <div class="notes">
+          <h2>Что мешает речи</h2>
+          <ol class="weaknesses" id="weaknesses"></ol>
+
+          <h2>Что уже работает</h2>
+          <ul class="strengths" id="strengths"></ul>
+
+          <h2>Упражнения до следующей репетиции</h2>
+          <ul class="exercises" id="exercises"></ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="bottom">
+    <p>Трибуна не хранит ваши тексты и записи: они уходят в Gemini только на время разбора.</p>
+  </footer>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
