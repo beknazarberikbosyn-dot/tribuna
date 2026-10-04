@@ -45,7 +45,8 @@ npm run dev
 | `public/metrics.js` | Подсчёт слов, темпа, слов-паразитов, пометки в тексте |
 | `lib/gemini.js` | Проверка запроса, промпт, обращение к Gemini |
 | `api/analyze.js` | Серверная функция Vercel |
-| `server.js` | Локальный сервер для разработки |
+| `dev/local-server.js` | Локальный сервер для разработки |
+| `vercel.json` | Настройки Vercel: статика из `public/`, функции из `api/` |
 | `test/` | Тесты (`npm test`) |
 
 ## Ограничения

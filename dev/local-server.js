@@ -1,13 +1,14 @@
 // Локальный сервер без зависимостей: раздаёт public/ и обслуживает POST /api/analyze.
 // На Vercel этот файл не используется, там работает api/analyze.js.
+// Лежит в dev/, а не в корне: файл server.js в корне Vercel принимает за серверное приложение.
 import { createServer } from 'node:http';
 import { readFile } from 'node:fs/promises';
 import { existsSync, readFileSync } from 'node:fs';
 import { extname, join, normalize, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { analyze } from './lib/gemini.js';
+import { analyze } from '../lib/gemini.js';
 
-const ROOT = fileURLToPath(new URL('.', import.meta.url));
+const ROOT = fileURLToPath(new URL('..', import.meta.url));
 const PUBLIC_DIR = join(ROOT, 'public');
 const MAX_BODY_BYTES = 4.5 * 1024 * 1024;
 
